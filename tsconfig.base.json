@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"], // resolve ke root semua
+      "@apps/*": ["apps/*"],
+      "@packages/*": ["packages/*"]
+    }
+  }
+}
