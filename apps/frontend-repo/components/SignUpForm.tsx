@@ -29,6 +29,9 @@ import { useRouter } from "next/navigation";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@apps/frontend-repo/firebase";
 import Cookie from "js-cookie";
+import Cookies from "js-cookie";
+import { AppDispatch, resetStatus } from "../store";
+import { useDispatch } from "react-redux";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -78,6 +81,15 @@ export default function SignUpForm(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  const token = Cookies.get("accessToken");
+  const dispatch = useDispatch<AppDispatch>();
+
+  React.useEffect(() => {
+    if (token) {
+      Cookies.remove("accessToken");
+      dispatch(resetStatus());
+    }
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);

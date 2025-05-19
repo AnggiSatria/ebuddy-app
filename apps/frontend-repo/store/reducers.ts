@@ -11,7 +11,7 @@ export interface UserState {
 
 const initialState: UserState = {
   data: null,
-  loading: false,
+  loading: true,
   error: null,
   success: null,
 };
@@ -21,6 +21,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     resetStatus(state) {
+      state.data = null;
+      state.loading = true;
       state.error = null;
       state.success = null;
     },

@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   AppDispatch,
   getUserData,
+  resetStatus,
   RootState,
 } from "@/apps/frontend-repo/store";
 import Cookies from "js-cookie";
@@ -23,13 +24,16 @@ import { useRouter } from "next/navigation";
 
 export default function UsersCrudPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { error } = useSelector((state: RootState) => state.user);
+  const { data, error, loading } = useSelector(
+    (state: RootState) => state.user
+  );
   const router = useRouter();
   const token = Cookies.get("accessToken");
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    dispatch(resetStatus());
   };
 
   const handleClose = () => {
@@ -38,17 +42,27 @@ export default function UsersCrudPage() {
   };
 
   React.useEffect(() => {
-    dispatch(getUserData());
-  }, [dispatch]);
+    if (token) {
+      dispatch(getUserData());
+    }
+  }, [dispatch, token]);
 
-  // React.useEffect(() => {
-  //   if (token) {
-  //     if (error === "Invalid token") {
-  //       Cookies.remove("accessToken");
-  //       handleClickOpen();
-  //     }
-  //   }
-  // }, [error]);
+  React.useEffect(() => {
+    if (token) {
+      if (error === "Invalid token") {
+        handleClickOpen();
+      }
+    }
+  }, [error, token]);
+
+  React.useEffect(() => {
+    if (token) {
+      if (loading) return;
+      if (data === null) {
+        handleClickOpen();
+      }
+    }
+  }, [token, data, loading]);
 
   React.useEffect(() => {
     if (!token) {
