@@ -41,14 +41,14 @@ export default function UsersCrudPage() {
     dispatch(getUserData());
   }, [dispatch]);
 
-  React.useEffect(() => {
-    if (token) {
-      if (error === "Invalid token") {
-        Cookies.remove("accessToken");
-        handleClickOpen();
-      }
-    }
-  }, [error]);
+  // React.useEffect(() => {
+  //   if (token) {
+  //     if (error === "Invalid token") {
+  //       Cookies.remove("accessToken");
+  //       handleClickOpen();
+  //     }
+  //   }
+  // }, [error]);
 
   React.useEffect(() => {
     if (!token) {

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { usePathname, useParams, useRouter } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
 import { NextAppProvider } from "@toolpad/core/nextjs";
@@ -9,7 +9,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import type { Navigation } from "@toolpad/core/AppProvider";
 import Image from "next/image";
 import { Logout } from "@mui/icons-material";
-import Cookies from "js-cookie";
 
 const NAVIGATION: Navigation = [
   {
@@ -45,7 +44,6 @@ export default function DashboardPagesLayout(props: {
   const pathname = usePathname();
   const params = useParams();
   const [userId] = params.segments ?? [];
-  const router = useRouter();
 
   const title = React.useMemo(() => {
     if (pathname === "/users/new") {
@@ -60,13 +58,6 @@ export default function DashboardPagesLayout(props: {
 
     return undefined;
   }, [userId, pathname]);
-
-  React.useEffect(() => {
-    if (pathname === "/logout") {
-      Cookies.remove("accessToken");
-      router.push("/");
-    }
-  }, [pathname]);
 
   return (
     <html lang="en" data-toolpad-color-scheme="light">
